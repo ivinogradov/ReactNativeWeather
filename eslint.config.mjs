@@ -1,10 +1,13 @@
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import js from '@eslint/js';
-import pluginReact from 'eslint-plugin-react';
-import reactNativeCommunity from '@react-native-community/eslint-config';
+import react from 'eslint-plugin-react';
+import prettierConfig from 'eslint-config-prettier';
+import prettier from "eslint-plugin-prettier";
 
 export default defineConfig([
+  js.configs.recommended,
+  prettierConfig,
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
     languageOptions: {
@@ -12,8 +15,9 @@ export default defineConfig([
       sourceType: 'module',
       globals: { ...globals.browser, es2021: true },
     },
-    plugins: { react: pluginReact },
+    plugins: { react, prettier },
     rules: {
+      'prettier/prettier': 'error',
       semi: ['error', 'never'],
       'comma-dangle': ['error', 'never'],
       'react/jsx-filename-extension': [
@@ -27,7 +31,5 @@ export default defineConfig([
     },
   },
 
-  js.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  reactNativeCommunity,
+  
 ]);
