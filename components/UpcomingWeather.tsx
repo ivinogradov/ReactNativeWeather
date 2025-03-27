@@ -1,5 +1,5 @@
 import {Feather} from '@expo/vector-icons';
-import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 
 const DATA = [
   {
@@ -120,22 +120,62 @@ const DATA = [
     dt_txt: '2022-08-30 18:00:00',
   },
 ];
+
+interface WeatherData {
+  dt: number;
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    sea_level: number;
+    grnd_level: number;
+    humidity: number;
+    temp_kf: number;
+  };
+  weather: {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  }[];
+  clouds: { all: number };
+  wind: {
+    speed: number;
+    deg: number;
+    gust: number;
+  };
+  visibility: number;
+  pop: number;
+  rain?: { '1h': number };
+  sys: { pod: string };
+  dt_txt: string;
+}
+
+
 const Item = (props: ItemProps) => {
   const {dt_txt, min, max, condition} = props;
   return (
-    <View>
-      <Text>{dt_txt}</Text>
-      <Text>{min}</Text>
-      <Text>{max}</Text>
+    <View style={styles.item}>
+      <Feather name={'sun'} size={50} color={'white'} />
+      <Text style={styles.date}>{dt_txt}</Text>
+      <Text style={styles.temp}>{min}</Text>
+      <Text style={styles.temp}>{max}</Text>
       <Text>{condition}</Text>
-      <Feather name={'sun'} size={50} color={'black'} />
     </View>
   );
 };
 
-type ItemProps = { condition: string, dt_txt: string, min: string, max: string};
+const Empty = () => {
+    return (<View>
+        <Text>There are no items in the list :(</Text>
+    </View>)
+}
+
+type ItemProps = { condition: string, dt_txt: string, min: number, max: number};
 const UpcomingWeather = () => {
-  const renderItem = ({item}) => ( //TODO: define interface later when implement loading
+  const renderItem = ({item}:{item:WeatherData}) => (
     <Item
       condition={item.weather[0].main}
       dt_txt={item.dt_txt}
@@ -145,7 +185,13 @@ const UpcomingWeather = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text>Upcoming weather</Text>
-      <FlatList data={DATA} renderItem={renderItem} />
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.dt_txt}
+        // ItemSeparatorComponent={() => <View style={{backgroundColor: 'blue', height: 3 }}/>}
+        ListEmptyComponent={Empty}
+        />
     </SafeAreaView>
   );
 };
@@ -153,8 +199,27 @@ const UpcomingWeather = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: 'red'
   },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: 'pink',
+    borderWidth: 5
+  },
+  temp: {
+    color: 'white',
+    fontSize: 20
+  },
+  date: {
+    color: 'white',
+    fontSize: 15
+  }
 });
 
 export default UpcomingWeather;
