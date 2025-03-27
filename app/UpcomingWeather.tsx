@@ -153,20 +153,6 @@ interface WeatherData {
   dt_txt: string;
 }
 
-
-// const Item = (props: ItemProps) => {
-//   const {dt_txt, min, max, condition} = props;
-//   return (
-//     <View style={styles.item}>
-//       <Feather name={'sun'} size={50} color={'white'} />
-//       <Text style={styles.date}>{dt_txt}</Text>
-//       <Text style={styles.temp}>{min}</Text>
-//       <Text style={styles.temp}>{max}</Text>
-//       <Text>{condition}</Text>
-//     </View>
-//   );
-// };
-
 const Empty = () => {
     return (<View>
         <Text>There are no items in the list :(</Text>
@@ -181,18 +167,18 @@ const UpcomingWeather = () => {
       min={item.main.temp_min}
       max={item.main.temp_max} />
   );
+  const { container, image } = styles
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={container}>
       <ImageBackground
         source={require('../assets/images/upcoming-background.jpg')}
-        style={styles.image}
+        style={image}
       >
         <Text>Upcoming weather</Text>
         <FlatList
           data={DATA}
           renderItem={renderItem}
           keyExtractor={(item) => item.dt_txt}
-          // ItemSeparatorComponent={() => <View style={{backgroundColor: 'blue', height: 3 }}/>}
           ListEmptyComponent={Empty}
           />
         </ImageBackground>

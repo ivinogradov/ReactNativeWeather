@@ -5,12 +5,13 @@ type ItemProps = { condition: string, dt_txt: string, min: number, max: number};
 
 const ListItem = (props: ItemProps) => {
     const {dt_txt, min, max, condition} = props;
+    const { item, date, temp } = styles
     return (
-      <View style={styles.item}>
+      <View style={item}>
         <Feather name={'sun'} size={50} color={'white'} />
-        <Text style={styles.date}>{dt_txt}</Text>
-        <Text style={styles.temp}>{min}</Text>
-        <Text style={styles.temp}>{max}</Text>
+        <Text style={date}>{dt_txt}</Text>
+        <Text style={temp}>{min}</Text>
+        <Text style={temp}>{max}</Text>
         <Text>{condition}</Text>
       </View>
     )
