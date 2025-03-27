@@ -1,5 +1,5 @@
-import CurrentWeather from "@/components/CurrentWeather";
-import UpcomingWeather from "@/components/UpcomingWeather";
+import CurrentWeather from "./CurrentWeather";
+import UpcomingWeather from "./UpcomingWeather";
 import { StyleSheet, View } from "react-native";
 
 const App = () => {
