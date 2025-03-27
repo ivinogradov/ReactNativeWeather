@@ -1,3 +1,4 @@
+import City from "./City";
 import CurrentWeather from "./CurrentWeather";
 import UpcomingWeather from "./UpcomingWeather";
 import { StyleSheet, View } from "react-native";
@@ -5,8 +6,9 @@ import { StyleSheet, View } from "react-native";
 const App = () => {
   return (
     <View style={styles.container}>
-      {/* <CurrentWeather /> */}
-      <UpcomingWeather />
+      <CurrentWeather />
+      {/* <UpcomingWeather /> */}
+      {/* <City /> */}
     </View>
   )
 }
