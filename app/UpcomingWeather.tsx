@@ -1,5 +1,11 @@
 import ListItem from '@/components/ListItem';
-import {FlatList, ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 const DATA = [
   {
@@ -140,7 +146,7 @@ interface WeatherData {
     description: string;
     icon: string;
   }[];
-  clouds: { all: number };
+  clouds: {all: number};
   wind: {
     speed: number;
     deg: number;
@@ -148,53 +154,48 @@ interface WeatherData {
   };
   visibility: number;
   pop: number;
-  rain?: { '1h': number };
-  sys: { pod: string };
+  rain?: {'1h': number};
+  sys: {pod: string};
   dt_txt: string;
 }
 
 const Empty = () => {
-    return (<View>
-        <Text>There are no items in the list :(</Text>
-    </View>)
-}
+  return (
+    <View>
+      <Text>There are no items in the list :(</Text>
+    </View>
+  );
+};
 
 const UpcomingWeather = () => {
-  const renderItem = ({item}:{item:WeatherData}) => (
+  const renderItem = ({item}: {item: WeatherData}) => (
     <ListItem
       condition={item.weather[0].main}
       dt_txt={item.dt_txt}
       min={item.main.temp_min}
-      max={item.main.temp_max} />
+      max={item.main.temp_max}
+    />
   );
-  const { container, image } = styles
+  const {image} = styles;
   return (
-    <SafeAreaView style={container}>
-      <ImageBackground
-        source={require('../assets/images/upcoming-background.jpg')}
-        style={image}
-      >
-        <Text>Upcoming weather</Text>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.dt_txt}
-          ListEmptyComponent={Empty}
-          />
-        </ImageBackground>
-    </SafeAreaView>
+    <ImageBackground
+      source={require('../assets/images/upcoming-background.jpg')}
+      style={image}>
+      <Text>Upcoming weather</Text>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.dt_txt}
+        ListEmptyComponent={Empty}
+      />
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-    backgroundColor: 'royalblue'
-  },
   image: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default UpcomingWeather;
