@@ -6,13 +6,13 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 const App = () => {
   const [loading, error, weather] = useGetWeather();
 
-  if (typeof weather === 'object' && weather !== null && 'list' in weather) {
+  if (typeof weather === 'object' && weather !== null && 'list' in weather && !loading) {
     return <Tabs weather={weather} />;
   }
 
   return (
     <View style={styles.container}>
-      {loading ? <ActivityIndicator size={'large'} color={'blue'} /> : <ErrorItem />}
+      {error ? <ErrorItem /> : <ActivityIndicator size={'large'} color={'blue'} />}
     </View>
   );
 };
