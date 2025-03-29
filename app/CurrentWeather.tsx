@@ -1,36 +1,79 @@
-import { StyleSheet, Text, View } from "react-native"
+import {StyleSheet, Text, View} from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
-import RowText from "@/components/RowText";
-import { weatherType } from "@/utilities/weatherType";
+import RowText from '@/components/RowText';
+import {weatherType} from '@/utilities/weatherType';
 
-const CurrentWeather = () => {
-  const { wrapper, container, temp, feels, highLowContainer, highLow, bodyWrapper, description, message } = styles
+interface WeatherData {
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_max: number;
+    temp_min: number;
+  };
+  weather: Array<{
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  }>;
+}
+
+const CurrentWeather = ({weatherData}: {weatherData: WeatherData}) => {
+  const {
+    wrapper,
+    container,
+    tempStyle,
+    feels,
+    highLowContainer,
+    highLow,
+    bodyWrapper,
+    description,
+    message,
+  } = styles;
+
+  const {
+    main: {temp, feels_like, temp_max, temp_min},
+    weather,
+  } = weatherData;
+
+  const weatherCondition = weather[0].main as keyof typeof weatherType;
+
+  console.log(weatherData);
+
   return (
-    <View style={wrapper}>
+    <View
+      style={[
+        wrapper,
+        {backgroundColor: weatherType[weatherCondition].backgroundColor},
+      ]}>
       <View style={container}>
-        <Feather name="sun" size={100} color="black" />
-        <Text style={temp}>6</Text>
-        <Text style={feels}>Feels like 5</Text>
+        <Feather
+          name={
+            weatherType[weatherCondition].icon as keyof typeof Feather.glyphMap
+          }
+          size={100}
+          color="white"
+        />
+        <Text style={tempStyle}>{temp}</Text>
+        <Text style={feels}>{`Feels like ${feels_like}`}</Text>
         <RowText
-          messageOne={'High: 6'}
-          messageTwo={'Low: 2'}
+          messageOne={`High: ${temp_max} `}
+          messageTwo={`Low: ${temp_min}`}
           containerStyles={highLowContainer}
           messageOneStyles={highLow}
           messageTwoStyles={highLow}
         />
       </View>
       <RowText
-        messageOne={'It\'s sunny'}
-        messageTwo={weatherType[
-          'Thunderstorm'
-        ].message}
+        messageOne={weather[0].description}
+        messageTwo={weatherType[weatherCondition].message}
         containerStyles={bodyWrapper}
         messageOneStyles={description}
         messageTwoStyles={message}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -40,35 +83,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  temp: {
+  tempStyle: {
     color: 'black',
-    fontSize: 48
+    fontSize: 48,
   },
   feels: {
     color: 'black',
-    fontSize: 30
+    fontSize: 30,
   },
   highLowContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   highLow: {
     color: 'black',
-    fontSize: 20
+    fontSize: 20,
   },
   bodyWrapper: {
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
     paddingLeft: 25,
-    marginBottom: 40
+    marginBottom: 40,
   },
   description: {
-    fontSize: 48
+    fontSize: 48,
   },
   message: {
-    fontSize: 30
-  }
-})
+    fontSize: 30,
+  },
+});
 
-export default CurrentWeather
+export default CurrentWeather;
