@@ -5,13 +5,29 @@ import * as Location from 'expo-location';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import { WEATHER_API_KEY } from '../env'
 
-/// api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key} 
 
 const App = () => {
   const [loading, setLoading] = useState(true);
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [error, setError] = useState<string | null>(null);
-  console.log(WEATHER_API_KEY);
+  const [weather, setWeather] = useState([])
+  const [lat, setLat] = useState<number | undefined>(undefined);
+  const [lon, setLon] = useState<number | undefined>(undefined);
+
+  const fetchWeatherData = async () => {
+    try {
+      const response = await fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`)
+      const data = await response.json()
+      console.log(data)
+      setWeather(data)
+      setLoading(false)
+    } catch (error) {
+      setError(`Could not fetch weather. Error: ${error}`)
+    } finally {
+      setLoading(false)
+    }
+
+  }
+
   useEffect(() => {
     (async () => {
       let {status} = await Location.requestForegroundPermissionsAsync();
@@ -21,12 +37,14 @@ const App = () => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setLat(location?.coords.latitude)
+      setLon(location?.coords.longitude)
+      await fetchWeatherData()
     }) ()
-  }, []);
+  }, [lat, lon]);
 
-  if (location) {
-    console.log(location)
+  if (weather) {
+    console.log(weather)
   }
 
   if (loading) {
