@@ -1,4 +1,7 @@
-export const weatherType = {
+import { Feather } from "@expo/vector-icons";
+
+
+export const weatherType: Record<string, { icon:  keyof typeof Feather.glyphMap; message: string; backgroundColor: string }> = {
     Thunderstorm: {
         icon: 'zap',
         message: 'It could get noisy',
@@ -15,7 +18,7 @@ export const weatherType = {
         backgroundColor: '#0000ff'
     },
     Snow: {
-        icon: 'cloud-now',
+        icon: 'cloud-snow',
         message: 'Let\'s build a snowman',
         backgroundColor: '#7f6065'
     },

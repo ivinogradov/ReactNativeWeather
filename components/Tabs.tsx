@@ -36,7 +36,7 @@ const Tabs = ({ weather }: WeatherProps) => {
         }}>
           {() => <CurrentWeather weatherData={weather.list[0]}/>}
         </Tab.Screen>
-        <Tab.Screen name="Upcoming" component={UpcomingWeather} options={{
+        <Tab.Screen name="Upcoming" options={{
           tabBarIcon: ({focused}) => (
             <Feather
               name={'clock'}
@@ -44,7 +44,9 @@ const Tabs = ({ weather }: WeatherProps) => {
               color={ focused ? 'tomato' : 'black' }
             />
           )
-        }}/>
+        }}>
+          { () => <UpcomingWeather weatherData={weather.list}/>}
+        </Tab.Screen>
         <Tab.Screen name="City" component={City} options={{
           tabBarIcon: ({focused}) => (
             <Feather
